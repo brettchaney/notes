@@ -1,0 +1,47 @@
+div {
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+}
+
+a {
+  padding: 10px 15px;
+  display: block;
+  color: #212529;
+  transition: margin 0.15s ease-out;
+  position: relative;
+  z-index: 10;
+  background-color: #fff;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
+
+  &:hover,
+  &:focus,
+  &.active {
+    background-color: #eee;
+    text-decoration: none;
+  }
+
+  @media (min-width: 600px) {
+    padding: 16px 20px;
+  }
+}
+
+.delete {
+  display: block;
+  height: calc(100% - 1px);
+  width: 100px;
+  background-color: #bf0a30;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+
+  .material-icons {
+    color: #fff;
+    transform: translateY(-50%);
+    top: 50%;
+    position: absolute;
+    cursor: pointer;
+    padding: 12px;
+    left: 1px;
+  }
+}

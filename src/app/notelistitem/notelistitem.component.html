@@ -1,0 +1,16 @@
+<div>
+  <a
+    [routerLink]="['/note', note.id]"
+    routerLinkActive="active"
+    mnSwipeNote
+    [x]="x"
+    (locationChange)="onPan($event)"
+    [style.marginLeft.px]="x"
+    >{{ note.title }}</a
+  >
+  <span class="delete"
+    ><span class="material-icons" (click)="deleteNote()">
+      delete_outline
+    </span></span
+  >
+</div>

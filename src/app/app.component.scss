@@ -1,0 +1,12 @@
+.container-fluid {
+  height: calc(100% - 56px);
+
+  @media (min-width: 600px) {
+    height: calc(100% - 64px);
+  }
+
+  .row,
+  .col-4 {
+    height: 100%;
+  }
+}

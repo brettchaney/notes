@@ -1,0 +1,24 @@
+<mat-toolbar color="primary" class="mat-elevation-z2">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-10">
+        <a routerLink="/" class="home-link">
+          <span class="material-icons home-icon float-left">
+            subject
+          </span>
+          <h1><span>my</span>notes</h1>
+        </a>
+      </div>
+      <div class="col-2 text-right">
+        <a
+          [routerLink]="['/note', newNoteId, { newnote: true }]"
+          routerLinkActive="active"
+          class="material-icons create"
+          *ngIf="newNoteId"
+        >
+          create
+        </a>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

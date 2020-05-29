@@ -1,0 +1,22 @@
+.note-wrap {
+  height: 100%;
+  padding-top: 20px;
+
+  > form {
+    height: 100%;
+
+    .note-body {
+      height: calc(100% - 98px);
+      padding-top: 10px;
+
+      textarea {
+        height: calc(100% - 10px);
+      }
+    }
+
+    input,
+    textarea {
+      font-size: 14px;
+    }
+  }
+}

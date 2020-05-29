@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col text-center">
+    <h2>Welcome to <span>my</span>notes</h2>
+    <p>
+      <span class="material-icons arrow">
+        keyboard_backspace
+      </span>
+      Please select a note on the left to view/edit.
+    </p>
+    <p>
+      Create a new note by clicking
+      <a
+        [routerLink]="['/note', newNoteId, { newnote: true }]"
+        routerLinkActive="active"
+        class="material-icons create"
+        *ngIf="newNoteId"
+      >
+        create
+      </a>
+    </p>
+  </div>
+</div>
