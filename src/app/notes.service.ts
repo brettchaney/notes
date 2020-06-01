@@ -1,15 +1,16 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { INote } from './inote';
+
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotesService {
   private dbPath = '/notes';
-  noteNewId = new Subject<number>();
-
+  noteNewId = new BehaviorSubject<number>(1);
   notesRef: AngularFireList<INote> = null;
 
   constructor(private db: AngularFireDatabase) {
@@ -28,8 +29,14 @@ export class NotesService {
     return this.notesRef.remove(key);
   }
 
-  getNotes(): AngularFireList<INote> {
-    return this.notesRef;
+  getNotes() {
+    return this.notesRef
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({ key: c.payload.key, ...c.payload.val() }))
+        )
+      );
   }
 
   noteExist(noteid): boolean {

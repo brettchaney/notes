@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 
 import { NotesService } from '../notes.service';
 import { INote } from '../inote';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.scss'],
 })
-export class NoteComponent implements OnInit {
+export class NoteComponent implements OnInit, OnDestroy {
+  private getNotesSub: Subscription;
   noteForm: FormGroup;
   note: INote;
   paramId: number;
@@ -41,7 +42,7 @@ export class NoteComponent implements OnInit {
     });
   }
 
-  newNoteSetup() {
+  newNoteSetup(): void {
     this.noteForm.setValue({
       body: '',
       id: this.paramId,
@@ -58,23 +59,15 @@ export class NoteComponent implements OnInit {
   }
 
   getNote(): void {
-    this.notesService
-      .getNotes()
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({ key: c.payload.key, ...c.payload.val() }))
-        )
-      )
-      .subscribe((notes) => {
-        this.note = notes.find((obj) => obj.id === this.paramId);
+    this.getNotesSub = this.notesService.getNotes().subscribe((notes) => {
+      this.note = notes.find((obj) => obj.id === this.paramId);
 
-        this.noteForm.setValue({
-          title: this.note.title,
-          body: this.note.body,
-          id: this.note.id,
-        });
+      this.noteForm.setValue({
+        title: this.note.title,
+        body: this.note.body,
+        id: this.note.id,
       });
+    });
   }
 
   updateNote(): void {
@@ -92,5 +85,9 @@ export class NoteComponent implements OnInit {
         .updateNote(this.note.key, this.noteForm.value)
         .catch((err) => console.log(err));
     }
+  }
+
+  ngOnDestroy(): void {
+    this.getNotesSub.unsubscribe();
   }
 }

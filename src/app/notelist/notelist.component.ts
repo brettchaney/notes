@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { NotesService } from '../notes.service';
 import { INote } from '../inote';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notelist',
   templateUrl: './notelist.component.html',
   styleUrls: ['./notelist.component.scss'],
 })
-export class NotelistComponent implements OnInit {
+export class NotelistComponent implements OnInit, OnDestroy {
+  private getNotesSub: Subscription;
   notes: INote[] = [];
   notesMaxId: number;
 
@@ -20,26 +21,22 @@ export class NotelistComponent implements OnInit {
   }
 
   getNotes(): void {
-    this.notesService
-      .getNotes()
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({ key: c.payload.key, ...c.payload.val() }))
-        )
-      )
-      .subscribe((notes) => {
-        this.notes = notes;
+    this.getNotesSub = this.notesService.getNotes().subscribe((notes) => {
+      this.notes = notes;
 
-        this.notesMaxId =
-          Math.max.apply(
-            Math,
-            notes.map(function (o) {
-              return o.id;
-            })
-          ) + 1;
+      this.notesMaxId =
+        Math.max.apply(
+          Math,
+          notes.map(function (o) {
+            return o.id;
+          })
+        ) + 1;
 
-        this.notesService.noteNewId.next(this.notesMaxId);
-      });
+      this.notesService.noteNewId.next(this.notesMaxId);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.getNotesSub.unsubscribe();
   }
 }
