@@ -1,5 +1,5 @@
 <!-- <div *ngIf="note" class="note-wrap"> -->
-<div *ngIf="note; else loading" class="note-wrap">
+<div *ngIf="currentNote || isNewNote; else loading" class="note-wrap">
   <form [formGroup]="noteForm">
     <input type="hidden" id="noteid" formControlName="id" />
     <div class="form-group">
@@ -9,7 +9,7 @@
         id="title"
         formControlName="title"
         class="form-control"
-        (change)="updateNote()"
+        (change)="updateNoteEvt()"
       />
     </div>
     <div class="form-group note-body">
@@ -18,7 +18,7 @@
         id="body"
         formControlName="body"
         class="form-control"
-        (change)="updateNote()"
+        (change)="updateNoteEvt()"
       ></textarea>
     </div>
   </form>

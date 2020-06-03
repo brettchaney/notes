@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NotesService } from '../notes.service';
 import { Subscription } from 'rxjs';
+import { NotesService } from '../notes.service';
 
 @Component({
   selector: 'app-navbar',

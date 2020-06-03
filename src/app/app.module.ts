@@ -20,7 +20,7 @@ import { NotelistComponent } from './notelist/notelist.component';
 import { NoteComponent } from './note/note.component';
 import { HomeComponent } from './home/home.component';
 import { SwipeNoteDirective } from './swipe-note.directive';
-import { NotelistitemComponent } from './notelistitem/notelistitem.component';
+import { NotelistitemComponent } from './notelist/notelistitem/notelistitem.component';
 
 declare var Hammer: any;
 

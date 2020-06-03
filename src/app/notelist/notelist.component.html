@@ -1,9 +1,14 @@
-<ul class="list-group" *ngIf="notes.length > 0; else loading">
-  <li class="list-group-item" *ngFor="let note of notes.slice().reverse()">
-    <app-notelistitem [note]="note"></app-notelistitem>
-  </li>
-</ul>
+<div class="wrap">
+  <ul class="list-group" *ngIf="notes.length > 0; else loading">
+    <li class="list-group-item" *ngFor="let note of notes.slice().reverse()">
+      <app-notelistitem
+        (selectedNoteId)="redirectNote($event)"
+        [note]="note"
+      ></app-notelistitem>
+    </li>
+  </ul>
 
-<ng-template #loading>
-  <div class="loader">Loading...</div>
-</ng-template>
+  <ng-template #loading>
+    <div class="loader">Loading...</div>
+  </ng-template>
+</div>

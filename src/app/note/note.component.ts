@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
+import { DataService } from '../data.service';
 import { NotesService } from '../notes.service';
 import { INote } from '../inote';
 import { Subscription } from 'rxjs';
@@ -14,12 +15,15 @@ import { Subscription } from 'rxjs';
 export class NoteComponent implements OnInit, OnDestroy {
   private getNotesSub: Subscription;
   noteForm: FormGroup;
-  note: INote;
+  currentNote: INote;
+  notes: INote[] = [];
   paramId: number;
-  isNewNote;
+  isNewNote: any;
+  notesLoaded: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
+    private dataService: DataService,
     private notesService: NotesService
   ) {}
 
@@ -35,59 +39,72 @@ export class NoteComponent implements OnInit, OnDestroy {
       this.isNewNote = this.route.snapshot.paramMap.get('newnote');
 
       if (this.isNewNote) {
-        this.newNoteSetup();
+        this.newNoteView();
       } else {
-        this.getNote();
+        // check if note is available
+        if (typeof this.notesService.getNote(this.paramId)[0] === 'object') {
+          console.log('note loaded');
+          this.currentNote = this.notesService.getNote(this.paramId)[0];
+          this.updateView();
+        } else {
+          this.getNotesSub = this.notesService.notesChanged.subscribe(
+            (notes) => {
+              console.log('notes updated from subject');
+              this.currentNote = this.notesService.getNote(this.paramId)[0];
+              this.updateView();
+            }
+          );
+        }
       }
     });
   }
 
-  newNoteSetup(): void {
+  newNoteView(): void {
+    console.log('new note');
+
     this.noteForm.setValue({
+      title: 'No title',
       body: '',
       id: this.paramId,
-      title: '',
-    });
-
-    this.note = {
-      body: this.noteForm.value.body,
-      id: this.noteForm.value.id,
-      title: 'No title',
-    };
-
-    this.updateNote();
-  }
-
-  getNote(): void {
-    this.getNotesSub = this.notesService.getNotes().subscribe((notes) => {
-      this.note = notes.find((obj) => obj.id === this.paramId);
-
-      this.noteForm.setValue({
-        title: this.note.title,
-        body: this.note.body,
-        id: this.note.id,
-      });
     });
   }
 
-  updateNote(): void {
+  updateView(): void {
+    console.log('update view: ', this.currentNote);
+
+    this.noteForm.setValue({
+      title: this.currentNote.title,
+      body: this.currentNote.body,
+      id: this.currentNote.id,
+    });
+  }
+
+  updateNoteEvt(): void {
+    console.log('update note');
+    this.noteForm.patchValue({
+      title: !this.noteForm.value.title
+        ? 'No title'
+        : this.noteForm.value.title,
+    });
+
     if (this.isNewNote) {
-      this.notesService.createNote(this.note);
+      this.currentNote = {
+        title: this.noteForm.value.title,
+        body: this.noteForm.value.body,
+        id: this.noteForm.value.id,
+      };
+      this.dataService.createNote(this.currentNote);
       this.isNewNote = false;
-      this.getNote();
     } else {
-      this.noteForm.patchValue({
-        title: !this.noteForm.value.title
-          ? 'No title'
-          : this.noteForm.value.title,
-      });
-      this.notesService
-        .updateNote(this.note.key, this.noteForm.value)
+      this.dataService
+        .updateNote(this.currentNote.key, this.noteForm.value)
         .catch((err) => console.log(err));
     }
   }
 
   ngOnDestroy(): void {
-    this.getNotesSub.unsubscribe();
+    if (this.getNotesSub) {
+      this.getNotesSub.unsubscribe();
+    }
   }
 }

@@ -1,6 +1,10 @@
 .note-wrap {
   height: 100%;
-  padding-top: 20px;
+  padding: 20px 0 0;
+
+  @media (min-width: 600px) {
+    padding: 20px 5px 0;
+  }
 
   > form {
     height: 100%;
@@ -10,7 +14,7 @@
       padding-top: 10px;
 
       textarea {
-        height: calc(100% - 10px);
+        height: calc(100% - 15px);
       }
     }
 

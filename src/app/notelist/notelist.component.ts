@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { NotesService } from '../notes.service';
 import { INote } from '../inote';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notelist',
@@ -10,33 +11,49 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./notelist.component.scss'],
 })
 export class NotelistComponent implements OnInit, OnDestroy {
-  private getNotesSub: Subscription;
   notes: INote[] = [];
   notesMaxId: number;
+  positiveMaxId: number;
 
-  constructor(private notesService: NotesService) {}
+  notesSub: Subscription;
+
+  constructor(private notesService: NotesService, private router: Router) {}
 
   ngOnInit(): void {
     this.getNotes();
   }
 
   getNotes(): void {
-    this.getNotesSub = this.notesService.getNotes().subscribe((notes) => {
-      this.notes = notes;
+    this.notesSub = this.notesService.notesChanged.subscribe(
+      (notes: INote[]) => {
+        this.notes = notes;
 
-      this.notesMaxId =
-        Math.max.apply(
-          Math,
-          notes.map(function (o) {
-            return o.id;
-          })
-        ) + 1;
+        this.notesMaxId =
+          Math.max.apply(
+            Math,
+            this.notes.map(function (o) {
+              return o.id;
+            })
+          ) + 1;
 
-      this.notesService.noteNewId.next(this.notesMaxId);
-    });
+        this.positiveMaxId = this.notesMaxId > 0 ? this.notesMaxId : 1;
+        this.notesService.noteNewId.next(this.positiveMaxId);
+      }
+    );
+  }
+
+  redirectNote(noteId: number) {
+    let index = this.notes.map((e) => e.id).indexOf(noteId);
+
+    if (index === 0) {
+      this.router.navigate(['']);
+    } else {
+      let newSelNoteID: number = this.notes[index - 1].id;
+      this.router.navigate(['/note/' + newSelNoteID]);
+    }
   }
 
   ngOnDestroy(): void {
-    this.getNotesSub.unsubscribe();
+    this.notesSub.unsubscribe();
   }
 }

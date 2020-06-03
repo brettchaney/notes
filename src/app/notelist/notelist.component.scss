@@ -1,9 +1,13 @@
+.wrap {
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
+  height: 100%;
+  margin: 0 -15px;
+
+  overflow: auto;
+}
+
 .list-group {
   border-radius: 0;
-  border-right: 1px solid rgba(0, 0, 0, 0.125);
-  margin: 0 -15px;
-  height: 100%;
-  overflow: auto;
 
   .list-group-item {
     border: 0;

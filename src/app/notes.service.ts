@@ -1,53 +1,41 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { INote } from './inote';
+import { Subject, BehaviorSubject } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { INote } from './inote';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotesService {
-  private dbPath = '/notes';
+  private notes: Array<INote> = [];
+  notesChanged = new Subject();
   noteNewId = new BehaviorSubject<number>(1);
-  notesRef: AngularFireList<INote> = null;
 
-  constructor(private db: AngularFireDatabase) {
-    this.notesRef = db.list(this.dbPath);
+  constructor() {}
+
+  setNotes(notes: Array<INote>) {
+    this.notes = notes;
+    this.notesChanged.next(this.notes);
   }
 
-  createNote(note: INote): void {
-    this.notesRef.push(note);
+  addNote(note: INote) {
+    this.notes.push(note);
+    this.notesChanged.next(this.notes.slice());
   }
 
-  updateNote(key: string, value: any): Promise<void> {
-    return this.notesRef.update(key, value);
-  }
-
-  deleteNote(key: string): Promise<void> {
-    return this.notesRef.remove(key);
+  updateNote(note: number, newNote: INote) {
+    this.notes[note] = newNote;
+    this.notesChanged.next(this.notes.slice());
   }
 
   getNotes() {
-    return this.notesRef
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({ key: c.payload.key, ...c.payload.val() }))
-        )
-      );
+    return this.notes.slice();
   }
 
-  noteExist(noteid): boolean {
-    let exists: boolean;
-    this.notesRef.query
-      .orderByChild('id')
-      .equalTo(noteid)
-      .once('value', (snapshot) => {
-        exists = snapshot.exists();
-      });
-
-    return exists;
+  getNote(index: number) {
+    let note = this.notes.filter((note) => {
+      return note.id === index;
+    });
+    return note;
   }
 }
