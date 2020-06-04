@@ -16,7 +16,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   private getNotesSub: Subscription;
   noteForm: FormGroup;
   currentNote: INote;
-  notes: INote[] = [];
+  notes: Array<INote>;
   paramId: number;
   isNewNote: any;
   notesLoaded: boolean = false;
@@ -43,13 +43,11 @@ export class NoteComponent implements OnInit, OnDestroy {
       } else {
         // check if note is available
         if (typeof this.notesService.getNote(this.paramId)[0] === 'object') {
-          console.log('note loaded');
           this.currentNote = this.notesService.getNote(this.paramId)[0];
           this.updateView();
         } else {
           this.getNotesSub = this.notesService.notesChanged.subscribe(
             (notes) => {
-              console.log('notes updated from subject');
               this.currentNote = this.notesService.getNote(this.paramId)[0];
               this.updateView();
             }
@@ -60,8 +58,6 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   newNoteView(): void {
-    console.log('new note');
-
     this.noteForm.setValue({
       title: 'No title',
       body: '',
@@ -70,8 +66,6 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   updateView(): void {
-    console.log('update view: ', this.currentNote);
-
     this.noteForm.setValue({
       title: this.currentNote.title,
       body: this.currentNote.body,
@@ -80,7 +74,6 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   updateNoteEvt(): void {
-    console.log('update note');
     this.noteForm.patchValue({
       title: !this.noteForm.value.title
         ? 'No title'
@@ -96,6 +89,16 @@ export class NoteComponent implements OnInit, OnDestroy {
       this.dataService.createNote(this.currentNote);
       this.isNewNote = false;
     } else {
+      // if no key is found in current note
+      // then find key for note in notes service array
+      this.notes = this.notesService.getNotes();
+
+      if (typeof this.currentNote.key === 'undefined') {
+        this.currentNote.key = this.notes.filter((note) => {
+          return note.id === this.paramId;
+        })[0]['key'];
+      }
+
       this.dataService
         .updateNote(this.currentNote.key, this.noteForm.value)
         .catch((err) => console.log(err));
