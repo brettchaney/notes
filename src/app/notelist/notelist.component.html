@@ -1,14 +1,29 @@
 <div class="wrap">
-  <ul class="list-group" *ngIf="notes.length > 0; else loading">
-    <li class="list-group-item" *ngFor="let note of notes.slice().reverse()">
-      <app-notelistitem
-        (selectedNoteId)="redirectNote($event)"
-        [note]="note"
-      ></app-notelistitem>
-    </li>
-  </ul>
+  <div *ngIf="notesChecked; else loading">
+    <ul class="list-group" *ngIf="notes.length > 0; else nonotes">
+      <li class="list-group-item" *ngFor="let note of notes.slice().reverse()">
+        <app-notelistitem
+          (selectedNoteId)="redirectNote($event)"
+          [note]="note"
+        ></app-notelistitem>
+      </li>
+    </ul>
+  </div>
 
   <ng-template #loading>
     <div class="loader">Loading...</div>
+  </ng-template>
+
+  <ng-template #nonotes>
+    <div class="new-note">
+      <button
+        [routerLink]="['/note', newNoteId, { newnote: true }]"
+        class="mdc-button mdc-button--outlined"
+        *ngIf="newNoteId"
+        type="button"
+      >
+        Create a new note
+      </button>
+    </div>
   </ng-template>
 </div>

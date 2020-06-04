@@ -11,15 +11,21 @@ import { INote } from '../inote';
   styleUrls: ['./notelist.component.scss'],
 })
 export class NotelistComponent implements OnInit, OnDestroy {
-  notes: INote[] = [];
+  private newIdSub: Subscription;
+  private notesSub: Subscription;
+
+  notes: Array<INote> = [];
   notesMaxId: number;
   positiveMaxId: number;
-
-  notesSub: Subscription;
+  notesChecked: boolean = false;
+  newNoteId: number;
 
   constructor(private notesService: NotesService, private router: Router) {}
 
   ngOnInit(): void {
+    this.newIdSub = this.notesService.noteNewId.subscribe(
+      (id: number) => (this.newNoteId = id)
+    );
     this.getNotes();
   }
 
@@ -38,6 +44,8 @@ export class NotelistComponent implements OnInit, OnDestroy {
 
         this.positiveMaxId = this.notesMaxId > 0 ? this.notesMaxId : 1;
         this.notesService.noteNewId.next(this.positiveMaxId);
+
+        this.notesChecked = true;
       }
     );
   }
@@ -55,5 +63,6 @@ export class NotelistComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.notesSub.unsubscribe();
+    this.newIdSub.unsubscribe();
   }
 }

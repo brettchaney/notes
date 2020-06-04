@@ -4,7 +4,7 @@ div {
 }
 
 a {
-  padding: 10px 15px;
+  padding: 14px 15px;
   display: block;
   color: #212529;
   transition: margin 0.15s ease-out;
@@ -20,7 +20,7 @@ a {
     text-decoration: none;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 576px) {
     padding: 16px 20px;
   }
 }

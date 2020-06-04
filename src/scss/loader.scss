@@ -11,7 +11,7 @@
 .loader {
   color: #3f51b5;
   text-indent: -9999em;
-  margin: 36vh auto 0;
+  margin: 12vh auto 0;
   position: relative;
   font-size: 6px;
   -webkit-transform: translateZ(0);
@@ -20,6 +20,10 @@
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
   opacity: 0.5;
+
+  @media screen and (min-height: 576px) {
+    margin: 36vh auto 0;
+  }
 }
 
 .loader:before,

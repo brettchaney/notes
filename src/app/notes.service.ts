@@ -10,6 +10,7 @@ export class NotesService {
   private notes: Array<INote> = [];
   notesChanged = new Subject();
   noteNewId = new BehaviorSubject<number>(1);
+  activatedNote = new Subject();
 
   constructor() {}
 

@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   private newIdSub: Subscription;
+
   newNoteId: number;
 
   constructor(private notesService: NotesService) {}

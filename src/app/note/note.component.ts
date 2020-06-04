@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class NoteComponent implements OnInit, OnDestroy {
   private getNotesSub: Subscription;
+
   noteForm: FormGroup;
   currentNote: INote;
   notes: Array<INote>;
@@ -38,17 +39,22 @@ export class NoteComponent implements OnInit, OnDestroy {
       this.paramId = parseInt(params.get('id'));
       this.isNewNote = this.route.snapshot.paramMap.get('newnote');
 
+      // this.notesService.activatedNote.next(this.paramId);
+
       if (this.isNewNote) {
+        this.notesService.activatedNote.next();
         this.newNoteView();
       } else {
         // check if note is available
         if (typeof this.notesService.getNote(this.paramId)[0] === 'object') {
           this.currentNote = this.notesService.getNote(this.paramId)[0];
+          this.notesService.activatedNote.next(this.currentNote);
           this.updateView();
         } else {
           this.getNotesSub = this.notesService.notesChanged.subscribe(
             (notes) => {
               this.currentNote = this.notesService.getNote(this.paramId)[0];
+              this.notesService.activatedNote.next(this.currentNote);
               this.updateView();
             }
           );
@@ -74,6 +80,8 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   updateNoteEvt(): void {
+    this.notesService.activatedNote.next(this.currentNote);
+
     this.noteForm.patchValue({
       title: !this.noteForm.value.title
         ? 'No title'
@@ -106,6 +114,8 @@ export class NoteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.notesService.activatedNote.next();
+
     if (this.getNotesSub) {
       this.getNotesSub.unsubscribe();
     }

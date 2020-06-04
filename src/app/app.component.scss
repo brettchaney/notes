@@ -1,12 +1,30 @@
 .container-fluid {
   height: calc(100% - 56px);
 
-  @media (min-width: 600px) {
-    height: calc(100% - 64px);
-  }
-
   .row,
   .col-4 {
     height: 100%;
+  }
+
+  .list-col {
+    height: 143px;
+  }
+
+  .note-col {
+    border-top: 1px solid #eee;
+    height: calc(100% - 143px);
+  }
+
+  @media (min-width: 576px) {
+    height: calc(100% - 64px);
+
+    .list-col {
+      height: 100%;
+    }
+
+    .note-col {
+      height: 100%;
+      border-top: 0;
+    }
   }
 }

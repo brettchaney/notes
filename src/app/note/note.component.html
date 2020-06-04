@@ -1,4 +1,3 @@
-<!-- <div *ngIf="note" class="note-wrap"> -->
 <div *ngIf="currentNote || isNewNote; else loading" class="note-wrap">
   <form [formGroup]="noteForm">
     <input type="hidden" id="noteid" formControlName="id" />
