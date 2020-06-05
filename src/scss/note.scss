@@ -9,16 +9,16 @@
   > form {
     height: 100%;
 
+    &.focused {
+      height: 400px;
+    }
+
     .note-body {
       height: calc(100% - 98px);
       padding-top: 5px;
 
       textarea {
         height: calc(100% - 10px);
-
-        @media (min-width: 576px) {
-          height: calc(100% - 15px);
-        }
       }
 
       @media (min-width: 576px) {

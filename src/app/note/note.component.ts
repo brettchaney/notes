@@ -21,6 +21,7 @@ export class NoteComponent implements OnInit, OnDestroy {
   paramId: number;
   isNewNote: any;
   notesLoaded: boolean = false;
+  isFocused: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -110,6 +111,13 @@ export class NoteComponent implements OnInit, OnDestroy {
       this.dataService
         .updateNote(this.currentNote.key, this.noteForm.value)
         .catch((err) => console.log(err));
+    }
+  }
+
+  jumpToTop(el) {
+    if (window.innerWidth < 576) {
+      this.isFocused = true;
+      el.scrollIntoView();
     }
   }
 

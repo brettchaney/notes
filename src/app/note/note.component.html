@@ -1,5 +1,5 @@
 <div *ngIf="currentNote || isNewNote; else loading" class="note-wrap">
-  <form [formGroup]="noteForm">
+  <form [formGroup]="noteForm" [class.focused]="isFocused">
     <input type="hidden" id="noteid" formControlName="id" />
     <div class="form-group">
       <label for="title">Title</label>
@@ -9,6 +9,8 @@
         formControlName="title"
         class="form-control"
         (change)="updateNoteEvt()"
+        (focus)="jumpToTop($event.target)"
+        (blur)="isFocused = false"
       />
     </div>
     <div class="form-group note-body">
@@ -18,6 +20,8 @@
         formControlName="body"
         class="form-control"
         (change)="updateNoteEvt()"
+        (focus)="jumpToTop($event.target)"
+        (blur)="isFocused = false"
       ></textarea>
     </div>
   </form>
