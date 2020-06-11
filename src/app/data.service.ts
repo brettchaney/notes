@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+
+import { map, tap } from 'rxjs/operators';
+
 import { INote } from './inote';
-
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-
 import { NotesService } from './notes.service';
 
 @Injectable({

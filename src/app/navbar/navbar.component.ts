@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { NotesService } from '../notes.service';
@@ -26,7 +27,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     private notesService: NotesService,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -42,7 +44,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   emailNote(): void {
-    this.dataService.emailNote(this.activatedNote);
+    this.dialog.open(DialogEmailNoteComponent, {
+      data: this.activatedNote,
+    });
+
+    //this.dataService.emailNote(this.activatedNote);
   }
 
   deleteNote(): void {
@@ -89,4 +95,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.newIdSub.unsubscribe();
     this.notesSub.unsubscribe();
   }
+}
+
+@Component({
+  selector: 'app-dialog-email-note',
+  templateUrl: './dialog-email-note/dialog-email-note.component.html',
+  styleUrls: ['./dialog-email-note/dialog-email-note.component.scss'],
+})
+export class DialogEmailNoteComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 }

@@ -10,8 +10,6 @@ export const sendNoteEmail = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Methods', 'GET, PUT, POST, OPTIONS');
   res.set('Access-Control-Allow-Headers', '*');
 
-  console.log('Request object: ' + req.method);
-
   if (req.method === 'OPTIONS') {
     res.end();
   } else {
