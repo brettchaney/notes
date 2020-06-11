@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { INote } from './inote';
 
-import { map, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { NotesService } from './notes.service';
 
@@ -11,14 +17,41 @@ import { NotesService } from './notes.service';
 })
 export class DataService {
   private dbPath = '/notes';
+  private sendNoteURL =
+    'https://us-central1-notes-ebde4.cloudfunctions.net/sendNoteEmail/';
 
   notesRef: AngularFireList<INote> = null;
 
   constructor(
     private db: AngularFireDatabase,
-    private notesService: NotesService
+    private notesService: NotesService,
+    private http: HttpClient
   ) {
     this.notesRef = db.list(this.dbPath);
+  }
+
+  emailNote(note: INote) {
+    const reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'No-Auth': 'True',
+    });
+
+    this.http
+      .post(this.sendNoteURL, note, {
+        headers: reqHeader,
+        responseType: 'text',
+      })
+      .subscribe(
+        (val) => {
+          console.log('POST call successful value returned in body', val);
+        },
+        (response) => {
+          console.log('POST call in error', response);
+        },
+        () => {
+          console.log('The POST observable is now completed.');
+        }
+      );
   }
 
   createNote(note: INote): void {

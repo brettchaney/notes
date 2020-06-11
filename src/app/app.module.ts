@@ -4,6 +4,7 @@ import {
   HammerGestureConfig,
   HAMMER_GESTURE_CONFIG,
 } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule, Injectable } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -46,6 +47,7 @@ export class HammerConfig extends HammerGestureConfig {
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     MatToolbarModule,
     ReactiveFormsModule,

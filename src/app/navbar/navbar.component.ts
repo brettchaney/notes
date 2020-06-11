@@ -41,6 +41,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.getNotes();
   }
 
+  emailNote(): void {
+    this.dataService.emailNote(this.activatedNote);
+  }
+
   deleteNote(): void {
     this.dataService
       .deleteNote(this.activatedNote.key)

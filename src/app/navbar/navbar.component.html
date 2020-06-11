@@ -11,6 +11,14 @@
       </div>
       <div class="col-4 text-right">
         <a
+          (click)="emailNote()"
+          class="material-icons email"
+          *ngIf="activatedNote"
+          title="Email selected note"
+        >
+          email
+        </a>
+        <a
           (click)="deleteNote()"
           class="material-icons delete"
           *ngIf="activatedNote"

@@ -55,6 +55,14 @@ h1 {
     top: 1px;
   }
 
+  &.email {
+    position: absolute;
+    cursor: pointer;
+    font-size: 26px;
+    right: 105px;
+    top: 3px;
+  }
+
   &:hover {
     text-decoration: none;
     opacity: 0.5;
@@ -75,6 +83,12 @@ h1 {
     &.delete {
       font-size: 32px;
       right: 65px;
+    }
+
+    &.email {
+      font-size: 28px;
+      right: 125px;
+      top: 3px;
     }
 
     &.create {
