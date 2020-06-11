@@ -1,0 +1,21 @@
+p {
+  margin-bottom: 20px;
+}
+
+label {
+  margin-bottom: 4px;
+}
+
+button {
+  background-color: #3f51b5;
+  border-color: #3f51b5;
+  font-size: 14px;
+  margin: 5px 0 3px;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+}

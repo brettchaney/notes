@@ -19,6 +19,7 @@ import { environment } from '../environments/environment';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NavbarComponent } from './navbar/navbar.component';
+import { DialogEmailNoteComponent } from './navbar/dialog-email-note/dialogemailnote.component';
 import { NotelistComponent } from './notelist/notelist.component';
 import { NoteComponent } from './note/note.component';
 import { HomeComponent } from './home/home.component';
@@ -41,6 +42,7 @@ export class HammerConfig extends HammerGestureConfig {
   declarations: [
     AppComponent,
     NavbarComponent,
+    DialogEmailNoteComponent,
     NotelistComponent,
     NoteComponent,
     HomeComponent,

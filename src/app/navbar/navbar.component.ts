@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { NotesService } from '../notes.service';
 import { DataService } from '../data.service';
 import { INote } from '../inote';
+
+import { DialogEmailNoteComponent } from './dialog-email-note/dialogemailnote.component';
 
 @Component({
   selector: 'app-navbar',
@@ -47,8 +49,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.dialog.open(DialogEmailNoteComponent, {
       data: this.activatedNote,
     });
-
-    //this.dataService.emailNote(this.activatedNote);
   }
 
   deleteNote(): void {
@@ -95,13 +95,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.newIdSub.unsubscribe();
     this.notesSub.unsubscribe();
   }
-}
-
-@Component({
-  selector: 'app-dialog-email-note',
-  templateUrl: './dialog-email-note/dialog-email-note.component.html',
-  styleUrls: ['./dialog-email-note/dialog-email-note.component.scss'],
-})
-export class DialogEmailNoteComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 }

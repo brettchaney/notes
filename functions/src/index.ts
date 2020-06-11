@@ -15,7 +15,7 @@ export const sendNoteEmail = functions.https.onRequest((req, res) => {
   } else {
     const note = req.body;
     const msg = {
-      to: 'bchaney78@gmail.com',
+      to: note.email,
       from: 'notes@brettchaney.com',
       subject: note.title,
       text: `<h2>${note.title}</h2> ${note.body}`,
