@@ -48,6 +48,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   emailNote(): void {
     this.dialog.open(DialogEmailNoteComponent, {
       data: this.activatedNote,
+      disableClose: true,
     });
   }
 

@@ -22,7 +22,11 @@ label {
   color: #212529;
   font-weight: 600;
   font-size: 16px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+
+  &.disable {
+    color: #ccc;
+  }
 }
 
 input,
@@ -35,7 +39,41 @@ textarea {
     padding-left: 0;
     padding-right: 0;
     font-size: 14px;
+
+    &:disabled {
+      background-color: transparent;
+      color: #ccc;
+    }
   }
+}
+
+button.btn-primary:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+
+  &:hover,
+  &:focus {
+    background-color: #ccc;
+    border-color: #ccc;
+  }
+}
+
+.cdk-overlay-container {
+  .cdk-overlay-pane {
+    max-width: 90vw !important;
+  }
+
+  .mat-dialog-container {
+    padding-bottom: 16px;
+    position: relative;
+    max-width: 450px;
+    width: 450px;
+  }
+}
+
+.error-red {
+  color: #cc0000;
 }
 
 @import "./scss/loader";

@@ -2,10 +2,6 @@ p {
   margin-bottom: 20px;
 }
 
-label {
-  margin-bottom: 4px;
-}
-
 button {
   background-color: #3f51b5;
   border-color: #3f51b5;
@@ -17,5 +13,40 @@ button {
     color: #fff;
     background-color: #0069d9;
     border-color: #0062cc;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.progress-wrap {
+  height: 4px;
+  margin-top: 10px;
+}
+
+.btn-close {
+  position: absolute;
+  color: #212529;
+  top: 12px;
+  right: 9px;
+  background: transparent;
+  border: transparent;
+  margin: 0;
+  padding: 7px 10px 2px;
+
+  &:hover,
+  &:focus {
+    color: #212529;
+    background: transparent;
+    border: transparent;
+  }
+
+  &:focus {
+    outline: 1px dotted;
   }
 }

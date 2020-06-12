@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DialogEmailNoteComponent } from './navbar/dialog-email-note/dialogemailnote.component';
 import { NotelistComponent } from './notelist/notelist.component';
@@ -56,6 +57,7 @@ export class HammerConfig extends HammerGestureConfig {
     AppRoutingModule,
     MatToolbarModule,
     MatDialogModule,
+    MatProgressBarModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

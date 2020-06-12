@@ -1,14 +1,44 @@
 <h1 mat-dialog-title>Email this note</h1>
 
 <div mat-dialog-content>
-  <!-- <button mat-dialog-close>Close</button> -->
-  <p>
+  <button mat-dialog-close class="btn-close">
+    <span class="material-icons">
+      close
+    </span>
+  </button>
+
+  <p [class.hide]="isSuccessful">
     Send your note titled &ldquo;<em>{{ data.title }}</em
     >&rdquo; to:
   </p>
-  <form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
+
+  <p [class.hide]="!isSuccessful">
+    You have successfully sent your note titled &ldquo;<em>{{ data.title }}</em
+    >&rdquo; to {{ currentEmail }}.
+  </p>
+  <button mat-dialog-close class="btn btn-primary" [class.hide]="!isSuccessful">
+    Close
+  </button>
+
+  <div [class.hide]="!isError">
+    <p class="error-red">
+      There was an error with sending the email. Please try again.
+    </p>
+  </div>
+
+  <div [class.hide]="!isEmpty">
+    <p class="error-red">
+      Please enter a valid email address below.
+    </p>
+  </div>
+
+  <form
+    [formGroup]="emailForm"
+    (ngSubmit)="onSubmit()"
+    [class.hide]="isSuccessful"
+  >
     <div class="form-group">
-      <label for="email">Email</label>
+      <label for="email" [class.disable]="isDisabled">Email</label>
       <input
         type="email"
         class="form-control"
@@ -18,6 +48,15 @@
       />
     </div>
 
-    <button type="submit" class="btn btn-primary">Send note</button>
+    <button type="submit" class="btn btn-primary" [disabled]="isDisabled">
+      Send note
+    </button>
+
+    <div class="progress-wrap">
+      <mat-progress-bar
+        mode="indeterminate"
+        *ngIf="inProgress"
+      ></mat-progress-bar>
+    </div>
   </form>
 </div>
